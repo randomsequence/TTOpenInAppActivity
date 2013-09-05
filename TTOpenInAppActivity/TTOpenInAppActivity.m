@@ -131,15 +131,16 @@
     
     if(!sucess){
         // There is no app to handle this file
-        NSString *deviceType = [UIDevice currentDevice].localizedModel;
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Your %@ doesn't seem to have any other Apps installed that can open this document.",
-                                                                         @"Your %@ doesn't seem to have any other Apps installed that can open this document."), deviceType];
+        NSString* message = NSLocalizedString(@"Your {devicemodel} doesn't have any apps that can open this document",
+                                              @"message indicating no apps were found that can open the document. {devicemodel} is replaced by the device name/kind and {devicename} is replaced by the user-specified name of the device, as in Bob's iPad.");
+        message = [message stringByReplacingOccurrencesOfString:@"{devicemodel}" withString:[UIDevice currentDevice].localizedModel];
+        message = [message stringByReplacingOccurrencesOfString:@"{devicename}" withString:[UIDevice currentDevice].name];
         
         // Display alert
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No suitable Apps installed", @"No suitable App installed")
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Suitable Apps Installed", @"title for alert indicating that no apps were found that can open the given document")
                                                         message:message
                                                        delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"ok")
                                               otherButtonTitles:nil];
         [alert show];
     }
